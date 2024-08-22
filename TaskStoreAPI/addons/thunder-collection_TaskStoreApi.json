@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "TaskStoreApi",
     "collectionId": "c6c6fa6b-fc2d-4c2f-816d-c989c92dbaba",
-    "dateExported": "2024-08-22T15:41:43.084Z",
+    "dateExported": "2024-08-22T16:28:23.689Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -36,6 +36,18 @@
             "headers": []
         },
         {
+            "_id": "4e7f208e-2384-425d-ba26-d50733e686cd",
+            "colId": "c6c6fa6b-fc2d-4c2f-816d-c989c92dbaba",
+            "containerId": "",
+            "name": "DeleteAllTasks",
+            "url": "http://localhost:8080/task/",
+            "method": "DELETE",
+            "sortNum": 20000,
+            "created": "2024-08-22T15:44:00.966Z",
+            "modified": "2024-08-22T15:47:37.959Z",
+            "headers": []
+        },
+        {
             "_id": "6d207a27-4a9d-45b5-ab2d-e7027a3463f5",
             "colId": "c6c6fa6b-fc2d-4c2f-816d-c989c92dbaba",
             "containerId": "",
@@ -44,9 +56,21 @@
             "method": "GET",
             "sortNum": 30000,
             "created": "2024-08-22T15:40:07.944Z",
-            "modified": "2024-08-22T15:40:22.403Z",
+            "modified": "2024-08-22T16:18:50.692Z",
+            "headers": []
+        },
+        {
+            "_id": "a242eb12-1668-4665-a309-36610ea0e226",
+            "colId": "c6c6fa6b-fc2d-4c2f-816d-c989c92dbaba",
+            "containerId": "",
+            "name": "DeleteTaskById",
+            "url": "http://localhost:8080/task/2",
+            "method": "DELETE",
+            "sortNum": 30000,
+            "created": "2024-08-22T15:45:15.176Z",
+            "modified": "2024-08-22T15:48:02.176Z",
             "headers": []
         }
     ],
-    "ref": "lY2rLV3Wkg9bJQLMjJ6hf5SaJhCWm0VEzDPi6vbM91l7ULqpsXfrdCtN3rV2zpKysSL5EXLmaCrQTWOMzKjo_A"
+    "ref": "lY2rLV3Wkg9bJQLMjJ6hf4QHYAgw1h860I12wSBh8d0IcRtfQC2etHvVvs-bmxbq3p4Rt6jSJWxY6_tFs81HgQ"
 }
