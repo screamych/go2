@@ -53,3 +53,15 @@ func (ts *TaskStore) GetTask(id int) (Task, error) {
 		return Task{}, fmt.Errorf("task with id=%d not found", id)
 	}
 }
+
+func (ts *TaskStore) GetAllTasks() []Task {
+	ts.Lock()
+	defer ts.Unlock()
+
+	allTasks := make([]Task, 0, len(ts.tasks))
+	for _, task := range ts.tasks {
+		allTasks = append(allTasks, task)
+	}
+
+	return allTasks
+}
