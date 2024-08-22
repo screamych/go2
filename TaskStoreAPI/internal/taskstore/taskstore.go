@@ -65,3 +65,23 @@ func (ts *TaskStore) GetAllTasks() []Task {
 
 	return allTasks
 }
+
+func (ts *TaskStore) DeleteAllTasks() error {
+	ts.Lock()
+	defer ts.Unlock()
+
+	ts.tasks = make(map[int]Task)
+	return nil
+}
+
+func (ts *TaskStore) DeleteTask(id int) error {
+	ts.Lock()
+	defer ts.Unlock()
+
+	_, ok := ts.tasks[id]
+	if !ok {
+		return fmt.Errorf("task with id=%d not found", id)
+	}
+	delete(ts.tasks, id)
+	return nil
+}
