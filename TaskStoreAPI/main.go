@@ -133,11 +133,13 @@ func (ts *taskServer) getTaskHandler(w http.ResponseWriter, r *http.Request, id 
 	task, err := ts.store.GetTask(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
+		return
 	}
 
 	js, err := json.Marshal(task)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(js)
