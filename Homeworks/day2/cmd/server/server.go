@@ -16,12 +16,6 @@ func RunServer() error {
 	}
 
 	// TMP tests
-	// task, err := models.GetTaskById(1)
-	// if err != nil {
-	// return fmt.Errorf("db error %s", err)
-	// }
-	// fmt.Println(task)
-	// fmt.Println()
 	// ---
 	// result, err := models.DeleteTaskById(15)
 	// if err != nil {
@@ -31,6 +25,9 @@ func RunServer() error {
 	// TMP tests
 
 	router := mux.NewRouter()
-	router.HandleFunc("/task/", handlers.TaskHandler)
+	router.HandleFunc("/task/", handlers.CreateTaskHandler).Methods("POST")
+	router.HandleFunc("/task/", handlers.GetAllTasksHandler).Methods("GET")
+	router.HandleFunc("/task/{id}", handlers.GetTaskHandler).Methods("Get")
+	router.HandleFunc("/task/", handlers.DeleteAllTasksHandler).Methods("DELETE")
 	return http.ListenAndServe(":8080", router)
 }

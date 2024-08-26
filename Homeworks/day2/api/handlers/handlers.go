@@ -3,12 +3,14 @@ package handlers
 import (
 	"SecondHomework/internal/models"
 	"encoding/json"
-	"fmt"
 	"log"
 	"mime"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gorilla/mux"
 )
 
 type MakeTask struct {
@@ -21,27 +23,16 @@ type ResponseCreated struct {
 	Result bool `json:"result"`
 }
 
-func TaskHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/task/" {
-		if r.Method == http.MethodPost {
-			createTaskHandler(w, r)
-		} else if r.Method == http.MethodGet {
-			getAllTasksHandler(w, r)
-		} else if r.Method == http.MethodDelete {
-			deleteAllTasksHandler(w, r)
-		} else {
-			http.Error(
-				w,
-				fmt.Sprintf("expect method GET, POST, DELETE at '/task', got %v", r.Method),
-				http.StatusMethodNotAllowed,
-			)
-			return
-		}
-	}
+type ErrorMessage struct {
+	Message string `json:"message"`
 }
 
-func createTaskHandler(w http.ResponseWriter, r *http.Request) {
+func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Task create handling at %s\n", r.URL.Path)
+	if r.Method != http.MethodPost {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 
 	contentType := r.Header.Get("Content-Type")
 	mediaType, _, err := mime.ParseMediaType(contentType)
@@ -84,8 +75,12 @@ func createTaskHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonResp)
 }
 
-func getAllTasksHandler(w http.ResponseWriter, r *http.Request) {
+func GetAllTasksHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Get all tasks handling at %s\n", r.URL.Path)
+	if r.Method != http.MethodGet {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 
 	allTasks, err := models.GetAllTasks()
 	if err != nil {
@@ -101,8 +96,43 @@ func getAllTasksHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonResp)
 }
 
-func deleteAllTasksHandler(w http.ResponseWriter, r *http.Request) {
+func GetTaskHandler(w http.ResponseWriter, r *http.Request) {
+	log.Printf("Get task by id handling at %s\n", r.URL.Path)
+	if r.Method != http.MethodGet {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		log.Println("client trying to use invalid id param:", err)
+		msg := ErrorMessage{Message: "do not use ID not supported int casting"}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(msg)
+	}
+
+	task, err := models.GetTaskById(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	jsonResp, err := json.Marshal(task)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonResp)
+}
+
+func DeleteAllTasksHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Delete all tasks handling at %s\n", r.URL.Path)
+	if r.Method != http.MethodDelete {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 
 	result, err := models.DeleteAllTasks()
 	if err != nil {
@@ -120,4 +150,13 @@ func deleteAllTasksHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(jsonResp)
+}
+
+func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
+	log.Printf("Delete task by id handling at %s\n", r.URL.Path)
+	if r.Method != http.MethodDelete {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 }
