@@ -15,22 +15,10 @@ func RunServer() error {
 		return fmt.Errorf("database inititializing error %s", err)
 	}
 
-	// TMP tests
-	// ---
-	// result, err := models.DeleteTaskById(15)
-	// if err != nil {
-	// return fmt.Errorf("db error %s", err)
-	// }
-	// log.Println(result)
-	// TMP tests
-
 	router := mux.NewRouter()
-
 	router.HandleFunc("/task/", handlers.CreateTaskHandler).Methods("POST")
-
 	router.HandleFunc("/task/", handlers.GetAllTasksHandler).Methods("GET")
-	router.HandleFunc("/task/{id}", handlers.GetTaskHandler).Methods("Get")
-
+	router.HandleFunc("/task/{id}", handlers.GetTaskHandler).Methods("GET")
 	router.HandleFunc("/task/", handlers.DeleteAllTasksHandler).Methods("DELETE")
 	router.HandleFunc("/task/{id}", handlers.DeleteTaskHandler).Methods("DELETE")
 
