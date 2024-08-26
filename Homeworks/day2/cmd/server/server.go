@@ -25,9 +25,14 @@ func RunServer() error {
 	// TMP tests
 
 	router := mux.NewRouter()
+
 	router.HandleFunc("/task/", handlers.CreateTaskHandler).Methods("POST")
+
 	router.HandleFunc("/task/", handlers.GetAllTasksHandler).Methods("GET")
 	router.HandleFunc("/task/{id}", handlers.GetTaskHandler).Methods("Get")
+
 	router.HandleFunc("/task/", handlers.DeleteAllTasksHandler).Methods("DELETE")
+	router.HandleFunc("/task/{id}", handlers.DeleteTaskHandler).Methods("DELETE")
+
 	return http.ListenAndServe(":8080", router)
 }
